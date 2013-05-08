@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}jqueryUI/css/eggplant/jquery-ui-1.9.1.custom.css"/>
+		<script src="{{STATIC_URL}}jqueryUI/js/jquery-1.8.2.js"></script>
+		<script src ="{{STATIC_URL}}jqueryUI/js/jquery-ui-1.9.1.custom.js"></script>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Welcome</title>
+	</head>
+	<body>
+		<form id='survey'  method="post" action="../survey/results">
+			{% csrf_token %}
+			{% if questionList %}
+			{% for question in questionList %}
+			<h1>{{question.questionText}}</h1>
+			<br>
+			{% if answerList%}
+			<select name='answer'>
+				<option value='-1'>----</option>
+				{%for answer in answerList%}
+				{%if answer.question_id == question.id %}
+				<option id='a{{answer.id}}' value='{{answer.id}}'> {{answer.answerText}} </option>
+				{%endif%}
+				{%endfor%}
+			</select>
+			{%endif%}
+			<br>
+			<br>
+			{% endfor %}
+			<br>
+			{% else %}
+			<p>
+				No questions have been added to the database
+			</p>
+			{% endif %}
+			<input type='submit' value='submit'>
+		</form>
+	</body>
+</html>
